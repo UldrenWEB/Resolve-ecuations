@@ -1,74 +1,142 @@
 'use strict'
 
-//Primeros pediremos la matriz A
-// var row1 = new Array()
-// var row2 = new Array()
-// var row3 = new Array()
-// var matrizA = new Array(row1, row2, row3);
-// var grado = parseInt(prompt("Diga de que grado sera el sistema de ecuaciones"))
+import Matrix from "./Systems.js"
 
-// let i = 0;
-// while (i < grado) {
-//     var fila1 = parseInt(prompt("Introduzca los datos de la matriz A, fila 1"));
-//     row1.push(fila1)
-//     i++;
-// }
 
-// let j = 0
-// while (j < grado) {
-//     var fila2 = parseInt(prompt("Introduzca los datos de la matriz A, fila 2"));
-//     row2.push(fila2)
-//     j++;
-// }
+const btn = document.querySelector(".dim-btn")
+const dimN = document.querySelector(".dimN");
+const containerMatriz = document.querySelector(".containerMatriz")
+const containerResults = document.querySelector(".containerResults")
 
-// let m = 0;
-// while (m < grado) {
-//     var fila3 = parseInt(prompt("Introduzca los datos de la matriz A, fila 3"));
-//     row3.push(fila3)
-//     m++;
-// }
+let valorN;
 
-var cantidad = parseInt(prompt("Introduce la cantidad de filas y columnas que tendra la matriz"))
+btn.addEventListener('click', () => {
+    if (isNaN(dimN.value)) {
+        alert("Ingrese un numero valido")
+        dimN.value = " ";
+    } else {
 
-var matrizA = new Array(cantidad)
+        valorN = +dimN.value;
 
-for (var i = 0; i < cantidad; i++) {
-    for (var j = 0; j < cantidad; j++){
-        matrizA[i] = new Array(j)
-    }
-        
-}
-for (var i = 0; i < cantidad; i++) {
-    for (var j = 0; j < cantidad; j++){
-        
-    }
-        matrizA[i][j] = parseInt(prompt(`Introduce los elementos de la matriz en la posicion de la fila ${i + 1} y columna ${j + 1}`))
-}
+        containerMatriz.style.gridTemplateRows = `repeat(${valorN},1fr)`
 
-//Diagonal principal de la matriz
-var suma;
-var cont = 0;
-for (var i = 0; i < cantidad; i++) {
-    suma = 0;
-    for (var j = 0; j < cantidad; j++) {
-        if (i == j){
-            var diagonal = matrizA[i][j];
-            console.log(diagonal)
-        } else {
-            suma += matrizA[i][j];
-            document.write(suma)
+        containerMatriz.style.gridTemplateColumns = `repeat(${valorN + 1}, 2.3rem)`
+
+        // Para crear los inputs dentro del container
+        for (let i = 0; i < valorN; i++) {
+            for (let j = 0; j < valorN + 1; j++) {
+
+                if (j == valorN) {
+                    var input1 = document.createElement("input")
+
+                    input1.classList.add("input1")
+                    input1.placeholder = `X${i + 1}`;
+                    containerMatriz.appendChild(input1)
+                } else {
+
+                    let input = document.createElement("input")
+                    input.classList.add("input")
+                    input.placeholder = ` `;
+                    containerMatriz.appendChild(input)
+                }
+
+            }
         }
-        
+
+
+
+
+
+
+
+        document.querySelector(".resultado").addEventListener("click", () => {
+
+
+            //Aqui sacamos los terminos independientes y los metemos en un arreglo para poder trabajar con ellos 
+
+            let independientes = []
+
+            let terminos = document.querySelectorAll(".input1")
+
+            terminos.forEach((cadaTermino, i) => {
+                let termIndep = Number(cadaTermino.value)
+
+                independientes.push(termIndep);
+            })
+
+            console.log(independientes)
+
+
+
+            // Esto es para sacar los datos que ingrese el usuario en los inputs
+
+            let todosLosInputs = document.querySelectorAll(".input")
+            let vector = []
+
+            todosLosInputs.forEach((cadaInput, i) => {
+                let valores = Number(cadaInput.value)
+
+                vector.push(valores)
+
+
+            });
+
+            console.log(vector)
+
+            let pasar = [];
+            for (let i = 0; i < valorN; i++) {
+                for (let j = 0; j < valorN; j++) {
+                    pasar[i] = new Array();
+                }
+            }
+
+            let m = 0;
+            for (let i = 0; i < valorN; i++) {
+                for (let j = 0; j < valorN; j++) {
+                    pasar[i][j] = vector[m]
+                    m++;
+                }
+            }
+            console.log(pasar);
+
+
+            //Aqui instanciamos la clase que importamos a este archivo
+
+            let matrizA = new Matrix(valorN)
+            matrizA.sacarArray(pasar)
+            matrizA.sacarUnos()
+            matrizA.sacarIndpendientes(independientes)
+            let hola = matrizA.sacarCoeficientes()
+
+            console.log(matrizA);
+
+            for (let i = 0; i < valorN; i++) {
+
+                let Rcoeficientes = document.createElement("div")
+
+                if (isNaN(hola[i])) {
+                    Rcoeficientes.innerHTML = `X${i} = ${hola[i]}`
+                } else {
+                    Rcoeficientes.innerHTML = `X${i} = ${hola[i].toFixed(2)}`
+
+                }
+                Rcoeficientes.classList.add("resultados")
+                containerResults.appendChild(Rcoeficientes)
+
+
+            }
+
+
+
+        })
     }
-    if(diagonal > suma){
-        cont++;
-    }
-}
-if(cont == cantidad){
-    alert('La matriz es diagonalmente dominante')
-}else{
-    alert('La matriz no es diagonalmente dominante, cambie el orden del sistema de ecuaciones')
-}
-console.log(matrizA)
+
+})
+
+
+
+
+
+
 
 

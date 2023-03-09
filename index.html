@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" href="./mycss.css">
-        <title>Resolve the system ecuations</title>
-    </head>
-    <body>
-        <h1>Creando un codigo para resolver matrices</h1>
-        <p>
-            Aqui crearemos el codigo que hara un sistemas de ecuaciones con n incognitas
-        </p>
 
-        <textarea id="Pantalla" readonly class="screen"></textarea>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./mycss.css">
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" type="image/x-icon" href="./icon/rocket.png" />
+    <title>Resolve the system ecuations</title>
+</head>
 
-        <script type="text/javascript" src="./Systems.js"></script>
-    </body>
+<body>
+    <div class="container">
+
+        <div class="content">
+            <h1>Ingrese la Dimension de la matriz</h1>
+
+            <div class="content-input">
+
+                <input type="text" class="dimN" id="dim" placeholder="Dimension" />
+
+                <div class="dim-btn">Crear</div>
+
+            </div>
+
+
+            <div class="content-datos">
+                <div class="containerMatriz">
+
+
+
+                    
+                </div>
+                <button class="resultado">Calcular</button>
+            </div>
+
+
+            <div class="containerResults"></div>
+
+        </div>
+    </div>
+
+    <!-- <script src="./Systems.js"></script> -->
+    <script src="./modulo.js" type="module"></script>
+</body>
+
 </html>
